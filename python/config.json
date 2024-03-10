@@ -1,0 +1,12 @@
+{
+	"BuildDebugConfiguration": {
+        "RemoteBuildCommandLine": "make CONFIG=DEBUG",
+        "RemoteReBuildCommandLine": "make CONFIG=DEBUG clean && make CONFIG=DEBUG",
+        "RemoteCleanCommandLine": "make CONFIG=DEBUG clean"
+    },
+    "BuildReleaseConfiguration": {
+        "RemoteBuildCommandLine": "make",
+        "RemoteReBuildCommandLine": "make clean && make",
+        "RemoteCleanCommandLine": "make clean"
+    }
+}
