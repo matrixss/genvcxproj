@@ -1,6 +1,6 @@
 # 功能说明
 
-基于Makefile，建立VC2022的Linux开发工程，主要用于远程开发场景；
+基于Makefile，建立VC2022的Linux开发工程；
 
 参考：[Visual C++ for Linux Development extension](http://aka.ms/vslinux). 
 
@@ -61,9 +61,11 @@ genvcxproj.py [-h] [-c COPY_LOCAL_FILES_TO_REMOTE] [-f CONFIG_FILE] [-i INCLUDE_
 参数说明：
 
 * -c： 是否将本地修改的文件复制到到远程，默认不复制（如果使用Linux共享文件夹的方式，则设置为不复制，如果为独立目录，则复制）；
-* -f： 指定一个配置文件，可以对工程的编译命令进行配置，参考config.json文件，如果不指定，在默认使用config.json. 该文件必须位于genvcxproj.py所在目录下。
-* -i：如果有include文件位于其它目录，可以使用该选项包含, 多个目录使用(和编译无关，只和IntelliSense有关)；分割。 例如: `$(ProjectDir)\..\inc;$(ProjectDir)\..\..\common`
-* local_root_dir：解决方案根目录，可以包含有多个工程，该文件夹用于指定工程集合的根目录；
+* -f： 指定一个配置文件，可以对工程的编译命令进行配置，参考config.json文件，如果不指定，则默认使用config.json. 可以使用绝对路径，如果不是绝对路径，则路径是相对于genvcxproj.py所在目录的。
+* -i： 如果有include文件位于其它目录，可以使用该选项包含, 多个目录使用(和编译无关，只和IntelliSense有关)；分割。 例如: `$(ProjectDir)\..\inc;$(ProjectDir)\..\..\common`
+* -b: 设置编译后远程生成的文件路径，设置后，默认为Debug的目标文件。该文件也会复制到本地OutDir中。
+* -o: 设置本地的生成文件路径。如果设置了-b参数，可以将远程生成的文复制到在该目录下。 参考设置："$(SolutionDir)bin\$(Platform)\$(Configuration)"
+* local_root_dir：解决方案根目录，可以包含有多个工程，该文件夹用于指定工程集合的根
 * relative_dir：本地工程对于local_root_dir的相对路径。
 * remote_root_dir: 远程解决方案的根目录；
 * output_vcxproj_file：生成的文件名子，不包含路径。该文件会保存在relative_dir目录下，和Makefile位于相同目录，以便于VC解析错误信息。
@@ -87,6 +89,7 @@ if "%PRJ_ROOT_DIR:~-1%"=="\" set PRJ_ROOT_DIR=%PRJ_ROOT_DIR:~0,-1%
 
 set SCRIPT_FILE=E:\Script\genvcxproj.py
 set REMOTE_ROOT_DIR=~/workspace/project_dir
+:: 是否将文件复制到远程，如果为空，则不复制。如果复制，设置为-c
 set COPY_TO_REMOTE=
 
 python "%SCRIPT_FILE%" %COPY_TO_REMOTE% "%PRJ_ROOT_DIR%" relative_dir01 "%REMOTE_ROOT_DIR%" proj01.vcxproj
